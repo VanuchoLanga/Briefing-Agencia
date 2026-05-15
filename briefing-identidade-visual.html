@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Briefing de Identidade Visual</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --accent: #c9a84c;
+    --accent2: #e8c97a;
+    --text: #f0ece4;
+    --muted: #888;
+    --error: #e05c5c;
+    --success: #6ecb8a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ---- PROGRESS BAR ---- */
+  #progress-bar-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--border);
+    z-index: 100;
+  }
+  #progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width .5s ease;
+    width: 0%;
+  }
+
+  /* ---- HEADER ---- */
+  header {
+    padding: 60px 40px 40px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .logo-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: block;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(34px, 6vw, 52px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  header h1 em {
+    font-style: italic;
+    color: var(--accent2);
+  }
+  header p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  /* ---- STEP INDICATOR ---- */
+  .step-nav {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 40px 40px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .step-dot {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .25s;
+    text-transform: uppercase;
+  }
+  .step-dot.active { border-color: var(--accent); color: var(--accent); background: rgba(201,168,76,.08); }
+  .step-dot.done { border-color: #333; color: var(--success); }
+  .step-dot .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  /* ---- FORM SECTIONS ---- */
+  .form-wrap { max-width: 760px; margin: 0 auto; padding: 0 40px 120px; }
+
+  .step-section { display: none; animation: fadeUp .4s ease both; }
+  .step-section.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-number {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+  }
+  .section-header p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  /* ---- FIELDS ---- */
+  .field { margin-bottom: 30px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .field label span { color: var(--accent); margin-left: 3px; }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="url"],
+  textarea,
+  select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    resize: vertical;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(201,168,76,.12);
+  }
+  textarea { min-height: 110px; }
+  select { appearance: none; cursor: pointer; }
+  select option { background: var(--surface2); }
+
+  ::placeholder { color: #444; }
+
+  /* ---- CHIP SELECTS ---- */
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+  .chip {
+    padding: 8px 18px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .2s;
+    user-select: none;
+    color: var(--muted);
+  }
+  .chip:hover { border-color: #555; color: var(--text); }
+  .chip.selected { border-color: var(--accent); color: var(--accent); background: rgba(201,168,76,.1); }
+
+  /* ---- COLOR PALETTE ---- */
+  .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
+  .palette-swatch {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color .2s, transform .15s;
+  }
+  .palette-swatch:hover { transform: scale(1.04); }
+  .palette-swatch.selected { border-color: var(--accent); }
+  .swatch-colors { height: 56px; display: flex; }
+  .swatch-colors div { flex: 1; }
+  .swatch-name {
+    background: var(--surface);
+    font-size: 11px;
+    text-align: center;
+    padding: 6px;
+    color: var(--muted);
+  }
+
+  /* ---- PERSONALITY SLIDERS ---- */
+  .slider-pair {
+    display: grid;
+    grid-template-columns: 100px 1fr 100px;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .slider-pair .label-left { text-align: right; font-size: 13px; color: var(--muted); }
+  .slider-pair .label-right { font-size: 13px; color: var(--muted); }
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  /* ---- GRID 2 COL ---- */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 540px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* ---- FILE INPUT ---- */
+  .file-zone {
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .2s;
+  }
+  .file-zone:hover { border-color: var(--accent); }
+  .file-zone p { color: var(--muted); font-size: 13px; margin-top: 8px; }
+  .file-zone .icon { font-size: 28px; }
+
+  /* ---- REFERENCE BOARD ---- */
+  .ref-board { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+  .ref-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .ref-chip button {
+    background: none; border: none;
+    color: var(--muted); cursor: pointer; font-size: 14px; line-height: 1;
+    padding: 0;
+  }
+  .ref-chip button:hover { color: var(--error); }
+
+  /* ---- NAVIGATION BUTTONS ---- */
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+  }
+  .btn {
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    cursor: pointer;
+    transition: all .2s;
+    border: none;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .btn-outline:hover { border-color: #555; color: var(--text); }
+  .btn-primary {
+    background: var(--accent);
+    color: #0d0d0d;
+    font-weight: 600;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+  .btn-ghost { background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; }
+  .btn-ghost:hover { color: var(--text); }
+
+  /* ---- SUCCESS SCREEN ---- */
+  #success-screen {
+    display: none;
+    text-align: center;
+    padding: 80px 40px;
+    max-width: 600px;
+    margin: 0 auto;
+    animation: fadeUp .5s ease both;
+  }
+  .success-icon {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(110,203,138,.1);
+    border: 1px solid var(--success);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 32px;
+  }
+  #success-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+  #success-screen p { color: var(--muted); line-height: 1.7; margin-bottom: 32px; }
+  #download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: #0d0d0d;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: all .2s;
+  }
+  #download-btn:hover { background: var(--accent2); }
+
+  /* ---- MISC ---- */
+  .helper { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .inline-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: rgba(201,168,76,.15);
+    color: var(--accent);
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  @media (max-width: 600px) {
+    header, .step-nav, .form-wrap { padding-left: 20px; padding-right: 20px; }
+    .slider-pair { grid-template-columns: 80px 1fr 80px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+
+<header>
+  <span class="logo-tag">✦ Briefing Criativo</span>
+  <h1>Identidade Visual<br/><em>do seu negócio</em></h1>
+  <p>Preencha as informações abaixo para que possamos criar uma identidade visual que realmente represente a essência da sua marca.</p>
+</header>
+
+<!-- STEP DOTS -->
+<nav class="step-nav" id="step-nav"></nav>
+
+<div class="form-wrap">
+
+  <!-- ======= STEP 1: EMPRESA ======= -->
+  <section class="step-section active" id="step-1">
+    <div class="section-header">
+      <div class="section-number">01 — Sobre a Empresa</div>
+      <h2>Quem é você?</h2>
+      <p>Conte-nos um pouco sobre o seu negócio e o que ele representa.</p>
+    </div>
+
+    <div class="field">
+      <label>Nome da empresa / marca <span>*</span></label>
+      <input type="text" id="empresa-nome" placeholder="Ex: Studio Luna, Café das Artes…"/>
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label>Segmento / nicho <span>*</span></label>
+        <input type="text" id="empresa-segmento" placeholder="Ex: Moda feminina, Tecnologia…"/>
+      </div>
+      <div class="field">
+        <label>Tempo de mercado</label>
+        <select id="empresa-tempo">
+          <option value="">Selecione…</option>
+          <option>Ainda não lancei</option>
+          <option>Menos de 1 ano</option>
+          <option>1 a 3 anos</option>
+          <option>3 a 5 anos</option>
+          <option>Mais de 5 anos</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>O que você faz / oferece? <span>*</span></label>
+      <textarea id="empresa-descricao" placeholder="Descreva seus produtos ou serviços de forma clara e objetiva…"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Qual é o propósito / missão da sua marca?</label>
+      <textarea id="empresa-missao" placeholder="Ex: Empoderar mulheres através da moda consciente…" style="min-height:80px"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Site / redes sociais</label>
+      <input type="url" id="empresa-site" placeholder="https://…"/>
+    </div>
+
+    <div class="nav-buttons">
+      <span></span>
+      <button class="btn btn-primary" onclick="goStep(2)">Próximo →</button>
+    </div>
+  </section>
+
+  <!-- ======= STEP 2: PÚBLICO ======= -->
+  <section class="step-section" id="step-2">
+    <div class="section-header">
+      <div class="section-number">02 — Público-Alvo</div>
+      <h2>Para quem você fala?</h2>
+      <p>Entender seu público é fundamental para criar uma identidade que conecte.</p>
+    </div>
+
+    <div class="field">
+      <label>Descreva seu cliente ideal</label>
+      <textarea id="pub-descricao" placeholder="Ex: Mulheres de 25 a 40 anos, profissionais liberais, que valorizam qualidade e estética…"></textarea>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Faixa etária principal</label>
+        <select id="pub-idade">
+          <option value="">Selecione…</option>
+          <option>Até 18 anos</option>
+          <option>18 – 25 anos</option>
+          <option>25 – 35 anos</option>
+          <option>35 – 50 anos</option>
+          <option>50+ anos</option>
+          <option>Todas as idades</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Gênero predominante</label>
+        <select id="pub-genero">
+          <option value="">Selecione…</option>
+          <option>Feminino</option>
+          <option>Masculino</option>
+          <option>Todos os gêneros</option>
+          <option>Não se aplica</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Nível de renda / ticket médio</label>
+      <div class="chips" id="chips-renda">
+        <div class="chip" data-group="renda">Popular (até R$ 100)</div>
+        <div class="chip" data-group="renda">Intermediário (R$ 100–500)</div>
+        <div class="chip" data-group="renda">Premium (R$ 500–2k)</div>
+        <div class="chip" data-group="renda">Luxo (R$ 2k+)</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Onde seu cliente vive?</label>
+      <div class="chips" id="chips-local">
+        <div class="chip" data-group="local">Local / cidade</div>
+        <div class="chip" data-group="local">Estadual</div>
+        <div class="chip" data-group="local">Nacional</div>
+        <div class="chip" data-group="local">Internacional</div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-outline" onclick="goStep(1)">← Voltar</button>
+      <button class="btn btn-primary" onclick="goStep(3)">Próximo →</button>
+    </div>
+  </section>
+
+  <!-- ======= STEP 3: PERSONALIDADE ======= -->
+  <section class="step-section" id="step-3">
+    <div class="section-header">
+      <div class="section-number">03 — Personalidade da Marca</div>
+      <h2>Que sentimento quer transmitir?</h2>
+      <p>Posicione os controles conforme a personalidade que você imagina para sua marca.</p>
+    </div>
+
+    <div class="field">
+      <label>Palavras que definem sua marca <span class="inline-badge">Escolha até 5</span></label>
+      <div class="chips" id="chips-palavras">
+        <div class="chip" data-group="palavras">Moderno</div>
+        <div class="chip" data-group="palavras">Clássico</div>
+        <div class="chip" data-group="palavras">Sofisticado</div>
+        <div class="chip" data-group="palavras">Descontraído</div>
+        <div class="chip" data-group="palavras">Inovador</div>
+        <div class="chip" data-group="palavras">Artesanal</div>
+        <div class="chip" data-group="palavras">Minimalista</div>
+        <div class="chip" data-group="palavras">Ousado</div>
+        <div class="chip" data-group="palavras">Delicado</div>
+        <div class="chip" data-group="palavras">Poderoso</div>
+        <div class="chip" data-group="palavras">Confiável</div>
+        <div class="chip" data-group="palavras">Sustentável</div>
+        <div class="chip" data-group="palavras">Exclusivo</div>
+        <div class="chip" data-group="palavras">Acessível</div>
+        <div class="chip" data-group="palavras">Jovial</div>
+        <div class="chip" data-group="palavras">Sério</div>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="field">
+      <label>Ajuste os extremos da personalidade</label>
+      <div id="sliders-wrap"></div>
+    </div>
+
+    <div class="field">
+      <label>Como sua marca se comunicaria se fosse uma pessoa?</label>
+      <textarea id="marca-voz" placeholder="Ex: Fala de igual para igual, usa humor sutil, é empática e direta…" style="min-height:80px"></textarea>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-outline" onclick="goStep(2)">← Voltar</button>
+      <button class="btn btn-primary" onclick="goStep(4)">Próximo →</button>
+    </div>
+  </section>
+
+  <!-- ======= STEP 4: VISUAL ======= -->
+  <section class="step-section" id="step-4">
+    <div class="section-header">
+      <div class="section-number">04 — Preferências Visuais</div>
+      <h2>Como você quer ser visto?</h2>
+      <p>Selecione as paletas e estilos que mais combinam com a sua visão.</p>
+    </div>
+
+    <div class="field">
+      <label>Paleta de cores <span class="inline-badge">Selecione até 2</span></label>
+      <div class="palette-grid" id="palette-grid"></div>
+    </div>
+
+    <div class="field" style="margin-top:30px">
+      <label>Há alguma cor que você definitivamente NÃO quer?</label>
+      <input type="text" id="cor-evitar" placeholder="Ex: vermelho, amarelo brilhante…"/>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="field">
+      <label>Estilo tipográfico preferido</label>
+      <div class="chips" id="chips-tipo">
+        <div class="chip" data-group="tipo">Serifado clássico</div>
+        <div class="chip" data-group="tipo">Sans-serif limpo</div>
+        <div class="chip" data-group="tipo">Script / manuscrito</div>
+        <div class="chip" data-group="tipo">Display / impactante</div>
+        <div class="chip" data-group="tipo">Geométrico</div>
+        <div class="chip" data-group="tipo">Humanista</div>
+        <div class="chip" data-group="tipo">Sem preferência</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Estilo gráfico / estético geral</label>
+      <div class="chips" id="chips-estilo">
+        <div class="chip" data-group="estilo">Minimalista</div>
+        <div class="chip" data-group="estilo">Maximalista</div>
+        <div class="chip" data-group="estilo">Orgânico / natural</div>
+        <div class="chip" data-group="estilo">Geométrico</div>
+        <div class="chip" data-group="estilo">Vintage / retrô</div>
+        <div class="chip" data-group="estilo">Futurista / tech</div>
+        <div class="chip" data-group="estilo">Editorial</div>
+        <div class="chip" data-group="estilo">Artesanal / handmade</div>
+        <div class="chip" data-group="estilo">Luxo / premium</div>
+        <div class="chip" data-group="estilo">Lúdico / divertido</div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-outline" onclick="goStep(3)">← Voltar</button>
+      <button class="btn btn-primary" onclick="goStep(5)">Próximo →</button>
+    </div>
+  </section>
+
+  <!-- ======= STEP 5: REFERÊNCIAS ======= -->
+  <section class="step-section" id="step-5">
+    <div class="section-header">
+      <div class="section-number">05 — Referências e Concorrentes</div>
+      <h2>O que te inspira?</h2>
+    </div>
+
+    <div class="field">
+      <label>Marcas que você admira (mesmo fora do seu setor)</label>
+      <div style="display:flex; gap:10px; margin-bottom:10px">
+        <input type="text" id="ref-input" placeholder="Ex: Apple, Chanel, Natura…" style="flex:1"/>
+        <button class="btn btn-outline" onclick="addRef()" style="white-space:nowrap; padding: 14px 20px">+ Adicionar</button>
+      </div>
+      <div class="ref-board" id="ref-board"></div>
+      <p class="helper">O que você gosta nessas marcas? Estilo, cores, tipografia, posicionamento?</p>
+    </div>
+
+    <div class="field">
+      <label>Por que você admira essas marcas?</label>
+      <textarea id="ref-motivo" placeholder="Ex: Gosto do minimalismo da Apple e da elegância atemporal da Chanel…"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Concorrentes diretos</label>
+      <div style="display:flex; gap:10px; margin-bottom:10px">
+        <input type="text" id="conc-input" placeholder="Ex: Empresa X, Marca Y…" style="flex:1"/>
+        <button class="btn btn-outline" onclick="addConc()" style="white-space:nowrap; padding: 14px 20px">+ Adicionar</button>
+      </div>
+      <div class="ref-board" id="conc-board"></div>
+    </div>
+
+    <div class="field">
+      <label>O que diferencia você dos concorrentes?</label>
+      <textarea id="diferencial" placeholder="Qual é o seu diferencial competitivo?…" style="min-height:80px"></textarea>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-outline" onclick="goStep(4)">← Voltar</button>
+      <button class="btn btn-primary" onclick="goStep(6)">Próximo →</button>
+    </div>
+  </section>
+
+  <!-- ======= STEP 6: ENTREGÁVEIS ======= -->
+  <section class="step-section" id="step-6">
+    <div class="section-header">
+      <div class="section-number">06 — Entregáveis e Prazo</div>
+      <h2>O que você precisa?</h2>
+    </div>
+
+    <div class="field">
+      <label>Quais itens você precisa? <span class="inline-badge">Selecione todos que precisar</span></label>
+      <div class="chips" id="chips-entrega">
+        <div class="chip" data-group="entrega">Logotipo</div>
+        <div class="chip" data-group="entrega">Símbolo / ícone</div>
+        <div class="chip" data-group="entrega">Paleta de cores</div>
+        <div class="chip" data-group="entrega">Tipografia</div>
+        <div class="chip" data-group="entrega">Papelaria (cartão, papel timbrado)</div>
+        <div class="chip" data-group="entrega">Posts para redes sociais</div>
+        <div class="chip" data-group="entrega">Stories / templates</div>
+        <div class="chip" data-group="entrega">Brand guide / manual</div>
+        <div class="chip" data-group="entrega">Embalagem</div>
+        <div class="chip" data-group="entrega">Sinalização / banner</div>
+        <div class="chip" data-group="entrega">Favicon / ícone de app</div>
+        <div class="chip" data-group="entrega">Identidade completa</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Prazo desejado</label>
+        <select id="prazo">
+          <option value="">Selecione…</option>
+          <option>Urgente (até 7 dias)</option>
+          <option>2 a 3 semanas</option>
+          <option>1 mês</option>
+          <option>Mais de 1 mês</option>
+          <option>Flexível</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Orçamento aproximado</label>
+        <select id="orcamento">
+          <option value="">Selecione…</option>
+          <option>Até R$ 500</option>
+          <option>R$ 500 – 1.500</option>
+          <option>R$ 1.500 – 3.000</option>
+          <option>R$ 3.000 – 6.000</option>
+          <option>Acima de R$ 6.000</option>
+          <option>A definir</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Informações adicionais / observações</label>
+      <textarea id="obs" placeholder="Conte qualquer detalhe importante que não foi coberto acima…"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Seu nome <span>*</span></label>
+      <input type="text" id="cliente-nome" placeholder="Nome completo"/>
+    </div>
+    <div class="field">
+      <label>E-mail para contato <span>*</span></label>
+      <input type="email" id="cliente-email" placeholder="seu@email.com"/>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-outline" onclick="goStep(5)">← Voltar</button>
+      <button class="btn btn-primary" onclick="finalize()" style="padding: 14px 44px; font-size: 15px;">✓ Enviar Briefing</button>
+    </div>
+  </section>
+
+</div><!-- /form-wrap -->
+
+<!-- SUCCESS -->
+<div id="success-screen">
+  <div class="success-icon">✓</div>
+  <h2>Briefing <em style="font-style:italic; color:var(--accent2)">recebido!</em></h2>
+  <p>Obrigado por preencher o briefing com tanto cuidado. Analisaremos todas as informações e entraremos em contato em breve para iniciar o projeto.</p>
+  <button id="download-btn" onclick="downloadBriefing()">⬇ Baixar resumo do briefing</button>
+  <p style="margin-top: 20px; font-size: 13px; color: var(--muted)">Uma cópia foi preparada para você guardar.</p>
+</div>
+
+<script>
+// ---- CONFIG ----
+const STEPS = [
+  { id: 1, label: "Empresa" },
+  { id: 2, label: "Público" },
+  { id: 3, label: "Persona" },
+  { id: 4, label: "Visual" },
+  { id: 5, label: "Referências" },
+  { id: 6, label: "Entrega" },
+];
+const TOTAL = STEPS.length;
+let currentStep = 1;
+const doneSteps = new Set();
+
+// Sliders de personalidade
+const SLIDER_PAIRS = [
+  ["Clássico", "Moderno"],
+  ["Sério", "Descontraído"],
+  ["Minimalista", "Exuberante"],
+  ["Feminino", "Masculino"],
+  ["Artesanal", "Tecnológico"],
+  ["Acessível", "Exclusivo"],
+];
+
+// Paletas de cores
+const PALETTES = [
+  { name: "Terra & Ouro", colors: ["#8B5E3C","#C9A84C","#F2EDE4","#2D1F0E"] },
+  { name: "Ocean Deep", colors: ["#1A2F4B","#2B6CB0","#63B3ED","#EBF8FF"] },
+  { name: "Sage & Creme", colors: ["#6B7C61","#A8B49A","#F5F0E8","#2C3020"] },
+  { name: "Coral & Rosa", colors: ["#E8876A","#F4A29B","#FCE4DE","#8B2E1A"] },
+  { name: "Noir & Prata", colors: ["#111111","#444444","#AAAAAA","#EEEEEE"] },
+  { name: "Violeta Real", colors: ["#3D1A6E","#7B2D8B","#C77DFF","#F8F0FF"] },
+  { name: "Floresta", colors: ["#1B4332","#2D6A4F","#74C69D","#D8F3DC"] },
+  { name: "Borgonha & Creme", colors: ["#6B0F1A","#B5142B","#E8C4CC","#FAF0F2"] },
+  { name: "Solar", colors: ["#8B4513","#E67E22","#F1C40F","#FFF9E6"] },
+  { name: "Artico", colors: ["#1B3A5C","#2E86AB","#A8DADC","#F1FAEE"] },
+  { name: "Grafite & Lima", colors: ["#2D2D2D","#555555","#B5CC18","#F5F5F5"] },
+  { name: "Blush & Ouro", colors: ["#C17D6A","#E8B4A0","#F9E4DC","#8B3A2A"] },
+];
+
+// ---- RENDER STEP NAV ----
+function renderNav() {
+  const nav = document.getElementById('step-nav');
+  nav.innerHTML = '';
+  STEPS.forEach(s => {
+    const d = document.createElement('div');
+    d.className = 'step-dot' + (s.id === currentStep ? ' active' : '') + (doneSteps.has(s.id) && s.id !== currentStep ? ' done' : '');
+    d.innerHTML = `<span class="dot"></span>${s.label}`;
+    d.onclick = () => { if (doneSteps.has(s.id) || s.id <= currentStep) goStep(s.id); };
+    nav.appendChild(d);
+  });
+}
+
+// ---- RENDER SLIDERS ----
+function renderSliders() {
+  const wrap = document.getElementById('sliders-wrap');
+  if (wrap.children.length > 0) return;
+  SLIDER_PAIRS.forEach((pair, i) => {
+    const row = document.createElement('div');
+    row.className = 'slider-pair';
+    row.innerHTML = `
+      <span class="label-left">${pair[0]}</span>
+      <input type="range" min="1" max="10" value="5" id="slider-${i}"/>
+      <span class="label-right">${pair[1]}</span>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+// ---- RENDER PALETTES ----
+function renderPalettes() {
+  const grid = document.getElementById('palette-grid');
+  if (grid.children.length > 0) return;
+  PALETTES.forEach((p, i) => {
+    const sw = document.createElement('div');
+    sw.className = 'palette-swatch';
+    sw.dataset.idx = i;
+    sw.innerHTML = `
+      <div class="swatch-colors">${p.colors.map(c=>`<div style="background:${c}"></div>`).join('')}</div>
+      <div class="swatch-name">${p.name}</div>
+    `;
+    sw.onclick = () => togglePalette(sw, i);
+    grid.appendChild(sw);
+  });
+}
+
+let selectedPalettes = [];
+function togglePalette(el, idx) {
+  if (el.classList.contains('selected')) {
+    el.classList.remove('selected');
+    selectedPalettes = selectedPalettes.filter(i => i !== idx);
+  } else {
+    if (selectedPalettes.length >= 2) {
+      document.querySelectorAll('.palette-swatch.selected')[0].classList.remove('selected');
+      selectedPalettes.shift();
+    }
+    el.classList.add('selected');
+    selectedPalettes.push(idx);
+  }
+}
+
+// ---- CHIPS ----
+document.addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  const group = chip.dataset.group;
+  const maxes = { palavras: 5 };
+  const max = maxes[group] || 99;
+  if (chip.classList.contains('selected')) {
+    chip.classList.remove('selected');
+  } else {
+    const sel = document.querySelectorAll(`.chip[data-group="${group}"].selected`);
+    if (sel.length >= max) sel[0].classList.remove('selected');
+    chip.classList.add('selected');
+  }
+});
+
+// ---- REFS & CONCS ----
+const refs = [], concs = [];
+
+function addToBoard(inputId, arr, boardId) {
+  const inp = document.getElementById(inputId);
+  const val = inp.value.trim();
+  if (!val) return;
+  arr.push(val);
+  inp.value = '';
+  renderBoard(arr, boardId, inputId);
+}
+function addRef() { addToBoard('ref-input', refs, 'ref-board'); }
+function addConc() { addToBoard('conc-input', concs, 'conc-board'); }
+
+function renderBoard(arr, boardId, inputId) {
+  const board = document.getElementById(boardId);
+  board.innerHTML = arr.map((r, i) => `
+    <div class="ref-chip">
+      ${r}
+      <button onclick="removeItem(${i}, '${boardId}', '${inputId}')">×</button>
+    </div>
+  `).join('');
+}
+function removeItem(i, boardId, inputId) {
+  const arr = boardId === 'ref-board' ? refs : concs;
+  arr.splice(i, 1);
+  renderBoard(arr, boardId, inputId);
+}
+
+// Enter key on inputs
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (e.target.id === 'ref-input') { e.preventDefault(); addRef(); }
+    if (e.target.id === 'conc-input') { e.preventDefault(); addConc(); }
+  }
+});
+
+// ---- NAVIGATION ----
+function goStep(n) {
+  doneSteps.add(currentStep);
+  document.getElementById(`step-${currentStep}`).classList.remove('active');
+  currentStep = n;
+  document.getElementById(`step-${n}`).classList.add('active');
+  if (n === 3) renderSliders();
+  if (n === 4) renderPalettes();
+  renderNav();
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  const pct = ((currentStep - 1) / TOTAL) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+// ---- COLLECT DATA ----
+function collectData() {
+  const get = id => (document.getElementById(id) || {}).value || '';
+  const chips = group => [...document.querySelectorAll(`.chip[data-group="${group}"].selected`)].map(c => c.textContent.trim());
+  const sliders = SLIDER_PAIRS.map((pair, i) => {
+    const val = document.getElementById(`slider-${i}`)?.value || 5;
+    return `${pair[0]} ←→ ${pair[1]}: ${val}/10`;
+  });
+
+  return {
+    empresa: {
+      nome: get('empresa-nome'),
+      segmento: get('empresa-segmento'),
+      tempo: get('empresa-tempo'),
+      descricao: get('empresa-descricao'),
+      missao: get('empresa-missao'),
+      site: get('empresa-site'),
+    },
+    publico: {
+      descricao: get('pub-descricao'),
+      idade: get('pub-idade'),
+      genero: get('pub-genero'),
+      renda: chips('renda'),
+      local: chips('local'),
+    },
+    personalidade: {
+      palavras: chips('palavras'),
+      sliders,
+      voz: get('marca-voz'),
+    },
+    visual: {
+      paletas: selectedPalettes.map(i => PALETTES[i].name),
+      corEvitar: get('cor-evitar'),
+      tipografia: chips('tipo'),
+      estilo: chips('estilo'),
+    },
+    referencias: {
+      marcas: [...refs],
+      motivo: get('ref-motivo'),
+      concorrentes: [...concs],
+      diferencial: get('diferencial'),
+    },
+    entrega: {
+      itens: chips('entrega'),
+      prazo: get('prazo'),
+      orcamento: get('orcamento'),
+      obs: get('obs'),
+    },
+    cliente: {
+      nome: get('cliente-nome'),
+      email: get('cliente-email'),
+    },
+  };
+}
+
+// ====================================================
+// 🔧 COLE SEU ENDPOINT DO FORMSPREE AQUI:
+// Exemplo: 'https://formspree.io/f/xyzabc123'
+// ====================================================
+const FORMSPREE_URL = 'https://formspree.io/f/mrejnkke';
+
+// ---- FINALIZE ----
+async function finalize() {
+  const data = collectData();
+  if (!data.empresa.nome) { alert('Por favor, informe o nome da empresa (passo 1).'); return; }
+  if (!data.cliente.nome || !data.cliente.email) { alert('Por favor, informe seu nome e e-mail no passo 6.'); return; }
+
+  // Mostrar loading no botão
+  const btn = document.querySelector('#step-6 .btn-primary');
+  btn.textContent = 'Enviando…';
+  btn.disabled = true;
+
+  // Montar payload formatado para o e-mail
+  const payload = {
+    _subject: `📋 Novo Briefing — ${data.empresa.nome}`,
+    _replyto: data.cliente.email,
+
+    '👤 Cliente':           data.cliente.nome,
+    '📧 E-mail':            data.cliente.email,
+
+    '🏢 Empresa':           data.empresa.nome,
+    'Segmento':             data.empresa.segmento,
+    'Tempo de mercado':     data.empresa.tempo,
+    'Descrição':            data.empresa.descricao,
+    'Missão':               data.empresa.missao,
+    'Site':                 data.empresa.site,
+
+    '🎯 Público — Perfil':  data.publico.descricao,
+    'Faixa etária':         data.publico.idade,
+    'Gênero':               data.publico.genero,
+    'Renda':                data.publico.renda.join(', '),
+    'Localização':          data.publico.local.join(', '),
+
+    '✨ Palavras-chave':    data.personalidade.palavras.join(', '),
+    'Posicionamento':       data.personalidade.sliders.join(' | '),
+    'Voz da marca':         data.personalidade.voz,
+
+    '🎨 Paletas':           data.visual.paletas.join(', '),
+    'Cores a evitar':       data.visual.corEvitar,
+    'Tipografia':           data.visual.tipografia.join(', '),
+    'Estilo visual':        data.visual.estilo.join(', '),
+
+    '🔖 Marcas admiradas':  data.referencias.marcas.join(', '),
+    'Por que admira':       data.referencias.motivo,
+    'Concorrentes':         data.referencias.concorrentes.join(', '),
+    'Diferencial':          data.referencias.diferencial,
+
+    '📦 Entregáveis':       data.entrega.itens.join(', '),
+    'Prazo':                data.entrega.prazo,
+    'Orçamento':            data.entrega.orcamento,
+    'Observações':          data.entrega.obs,
+  };
+
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) throw new Error('Falha no envio');
+
+    // Sucesso
+    document.querySelector('.form-wrap').style.display = 'none';
+    document.querySelector('.step-nav').style.display = 'none';
+    document.querySelector('header').style.display = 'none';
+    document.getElementById('progress-bar').style.width = '100%';
+    document.getElementById('success-screen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window._briefingData = data;
+
+  } catch (err) {
+    btn.textContent = '✓ Enviar Briefing';
+    btn.disabled = false;
+    alert('❌ Erro ao enviar. Verifique sua conexão ou o endpoint do Formspree e tente novamente.');
+    console.error(err);
+  }
+}
+
+// ---- DOWNLOAD ----
+function downloadBriefing() {
+  const d = window._briefingData;
+  if (!d) return;
+
+  const line = (label, val) => val ? `${label}: ${Array.isArray(val) ? val.join(', ') : val}\n` : '';
+
+  const txt = `
+════════════════════════════════════════════
+  BRIEFING DE IDENTIDADE VISUAL
+════════════════════════════════════════════
+
+CLIENTE: ${d.cliente.nome}
+E-MAIL:  ${d.cliente.email}
+
+───────────────────────────────────────────
+1. SOBRE A EMPRESA
+───────────────────────────────────────────
+${line('Nome', d.empresa.nome)}${line('Segmento', d.empresa.segmento)}${line('Tempo de mercado', d.empresa.tempo)}${line('Descrição', d.empresa.descricao)}${line('Missão', d.empresa.missao)}${line('Site', d.empresa.site)}
+───────────────────────────────────────────
+2. PÚBLICO-ALVO
+───────────────────────────────────────────
+${line('Perfil', d.publico.descricao)}${line('Faixa etária', d.publico.idade)}${line('Gênero', d.publico.genero)}${line('Renda', d.publico.renda)}${line('Localização', d.publico.local)}
+───────────────────────────────────────────
+3. PERSONALIDADE DA MARCA
+───────────────────────────────────────────
+${line('Palavras-chave', d.personalidade.palavras)}
+POSICIONAMENTO:
+${d.personalidade.sliders.map(s => '  ' + s).join('\n')}
+${line('Voz da marca', d.personalidade.voz)}
+───────────────────────────────────────────
+4. PREFERÊNCIAS VISUAIS
+───────────────────────────────────────────
+${line('Paletas selecionadas', d.visual.paletas)}${line('Cores a evitar', d.visual.corEvitar)}${line('Tipografia', d.visual.tipografia)}${line('Estilo visual', d.visual.estilo)}
+───────────────────────────────────────────
+5. REFERÊNCIAS
+───────────────────────────────────────────
+${line('Marcas admiradas', d.referencias.marcas)}${line('Por quê', d.referencias.motivo)}${line('Concorrentes', d.referencias.concorrentes)}${line('Diferencial', d.referencias.diferencial)}
+───────────────────────────────────────────
+6. ENTREGÁVEIS
+───────────────────────────────────────────
+${line('Itens necessários', d.entrega.itens)}${line('Prazo', d.entrega.prazo)}${line('Orçamento', d.entrega.orcamento)}${line('Observações', d.entrega.obs)}
+════════════════════════════════════════════
+`.trim();
+
+  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `briefing-${d.empresa.nome.replace(/\s+/g,'_').toLowerCase() || 'identidade-visual'}.txt`;
+  a.click();
+}
+
+// ---- INIT ----
+renderNav();
+updateProgress();
+</script>
+</body>
+</html>
